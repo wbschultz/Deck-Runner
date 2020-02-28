@@ -19,37 +19,39 @@ public class PlayerController : MonoBehaviour
         // for now, move on a and d, later move cards
         if (Input.GetMouseButtonDown(1))
         {
-            MovePlayer(false);
+            MovePlayerRight();
         }
 
         if (Input.GetMouseButtonDown(0))
         {
-            MovePlayer(true);
+            MovePlayerLeft();
         }
     }
 
     /// <summary>
-    /// Move the player left or right
+    /// Move the player left
     /// </summary>
-    /// <param name="left">if left is true move left, else move right</param>
-    void MovePlayer(bool left)
+    void MovePlayerLeft()
     {
-        if (left)
-        {
-            if (transform.position == posList.CenterPosition)
-                transform.position = posList.LeftPosition;
-            else if (transform.position == posList.RightPosition)
-                transform.position = posList.CenterPosition;
-            else
-                print("Unexpected position in MovePlayer");
-        } else 
-        {
-            if (transform.position == posList.CenterPosition)
-                transform.position = posList.RightPosition;
-            else if (transform.position == posList.LeftPosition)
-                transform.position = posList.CenterPosition;
-            else
-                print("Unexpected position in MovePlayer");
-        }
+
+        if (transform.position == posList.CenterPosition)
+            transform.position = posList.LeftPosition;
+        else if (transform.position == posList.RightPosition)
+            transform.position = posList.CenterPosition;
+        else
+            print("Unexpected position in MovePlayerLeft");
+    }
+
+    ///<summary>
+    /// Move the player right
+    /// </summary>
+    void MovePlayerRight()
+    {
+        if (transform.position == posList.CenterPosition)
+            transform.position = posList.RightPosition;
+        else if (transform.position == posList.LeftPosition)
+            transform.position = posList.CenterPosition;
+        else
+            print("Unexpected position in MovePlayerRight");
     }
 }
