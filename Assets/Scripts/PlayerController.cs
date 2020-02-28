@@ -5,39 +5,51 @@ using DeckRunner.Positioning;
 
 public class PlayerController : MonoBehaviour
 {
-    private VerticalTrack currentTrack;
+    private TrackList posList;
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
-        currentTrack = TrackList.centerTrack;
+        posList = new TrackList(transform.position);
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         // for now, move on a and d, later move cards
         if (Input.GetMouseButtonDown(1))
         {
-            MovePlayer(currentTrack.right);
+            MovePlayer(false);
         }
 
         if (Input.GetMouseButtonDown(0))
         {
-            MovePlayer(currentTrack.left);
+            MovePlayer(true);
         }
     }
 
     /// <summary>
-    /// move the player left
+    /// Move the player left or right
     /// </summary>
-    /// <param name="target">VerticalTrack object to jump to</param>
-    void MovePlayer(VerticalTrack target)
+    /// <param name="left">if left is true move left, else move right</param>
+    void MovePlayer(bool left)
     {
-        if (target != null)
+        if (left)
         {
-            transform.position = new Vector3(target.marker.x, transform.position.y, transform.position.z);
-            currentTrack = target;
+            if (transform.position == posList.CenterPosition)
+                transform.position = posList.LeftPosition;
+            else if (transform.position == posList.RightPosition)
+                transform.position = posList.CenterPosition;
+            else
+                print("Unexpected position in MovePlayer");
+        } else 
+        {
+            if (transform.position == posList.CenterPosition)
+                transform.position = posList.RightPosition;
+            else if (transform.position == posList.LeftPosition)
+                transform.position = posList.CenterPosition;
+            else
+                print("Unexpected position in MovePlayer");
         }
     }
 }
