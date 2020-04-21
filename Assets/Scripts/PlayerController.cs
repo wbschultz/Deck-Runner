@@ -2,9 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 using DeckRunner.Positioning;
+using DG.Tweening;
 
 public class PlayerController : MonoBehaviour
 {
+    [SerializeField] private float leftRightDuration = 0.5f;
+
     private TrackList posList;
 
     // Start is called before the first frame update
@@ -34,12 +37,23 @@ public class PlayerController : MonoBehaviour
     void MovePlayerLeft()
     {
 
+        Vector3 target;
+
         if (transform.position == posList.CenterPosition)
-            transform.position = posList.LeftPosition;
+        {
+            target = posList.LeftPosition;
+        }
         else if (transform.position == posList.RightPosition)
-            transform.position = posList.CenterPosition;
+        {
+            target = posList.CenterPosition;
+        }
         else
-            print("Unexpected position in MovePlayerLeft");
+        {
+            print("Unexpected position in MovePlayerRight");
+            return;
+        }
+
+        transform.DOMove(target, leftRightDuration);
     }
 
     ///<summary>
@@ -47,11 +61,22 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     void MovePlayerRight()
     {
+        Vector3 target;
+
         if (transform.position == posList.CenterPosition)
-            transform.position = posList.RightPosition;
+        {
+            target = posList.RightPosition;
+        }
         else if (transform.position == posList.LeftPosition)
-            transform.position = posList.CenterPosition;
+        {
+            target = posList.CenterPosition;
+        }
         else
+        {
             print("Unexpected position in MovePlayerRight");
+            return;
+        }
+
+        transform.DOMove(target, leftRightDuration);
     }
 }

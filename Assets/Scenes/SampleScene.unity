@@ -374,9 +374,9 @@ GameObject:
   m_Component:
   - component: {fileID: 808472984}
   - component: {fileID: 808472983}
-  - component: {fileID: 808472982}
   - component: {fileID: 808472985}
   - component: {fileID: 808472986}
+  - component: {fileID: 808472982}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -396,6 +396,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21e406e4da66fce4f87ab633948f8be3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  leftRightDuration: 0.3
 --- !u!212 &808472983
 SpriteRenderer:
   m_ObjectHideFlags: 0
