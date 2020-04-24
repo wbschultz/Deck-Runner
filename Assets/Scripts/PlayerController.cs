@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DeckRunner.Positioning;
@@ -8,12 +9,28 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField] private float leftRightDuration = 0.5f;
 
+    private Stack<Action> behaviorStack = new Stack<Action>();
+    private bool inAction;
+
     private TrackList posList;
+    private Vector3 target;
+    private Vector3 current;
 
     // Start is called before the first frame update
     private void Start()
     {
         posList = new TrackList(transform.position);
+        current = posList.CenterPosition;
+        target = posList.CenterPosition;
+    }
+
+    private void FixedUpdate()
+    {
+        if (!inAction && behaviorStack.Count > 0){
+            inAction = true;
+            Action nextAction = behaviorStack.Pop();
+            nextAction();
+        }
     }
 
     // Update is called once per frame
@@ -22,61 +39,28 @@ public class PlayerController : MonoBehaviour
         // for now, move on a and d, later move cards
         if (Input.GetMouseButtonDown(1))
         {
-            MovePlayerRight();
+            behaviorStack.Push(() => MovePlayer(false));
         }
 
         if (Input.GetMouseButtonDown(0))
         {
-            MovePlayerLeft();
+            behaviorStack.Push(() => MovePlayer(true));
         }
     }
 
     /// <summary>
-    /// Move the player left
+    /// Move the player left or right
     /// </summary>
-    void MovePlayerLeft()
+    void MovePlayer(bool left)
     {
-
-        Vector3 target;
-
-        if (transform.position == posList.CenterPosition)
-        {
-            target = posList.LeftPosition;
-        }
-        else if (transform.position == posList.RightPosition)
-        {
-            target = posList.CenterPosition;
-        }
+        if(left)
+            target = posList.leftTarget(current);
         else
-        {
-            print("Unexpected position in MovePlayerRight");
-            return;
-        }
-
-        transform.DOMove(target, leftRightDuration);
-    }
-
-    ///<summary>
-    /// Move the player right
-    /// </summary>
-    void MovePlayerRight()
-    {
-        Vector3 target;
-
-        if (transform.position == posList.CenterPosition)
-        {
-            target = posList.RightPosition;
-        }
-        else if (transform.position == posList.LeftPosition)
-        {
-            target = posList.CenterPosition;
-        }
-        else
-        {
-            print("Unexpected position in MovePlayerRight");
-            return;
-        }
-
-        transform.DOMove(target, leftRightDuration);
+            target = posList.rightTarget(current);
+        Tween tweener = transform.DOMove(target, leftRightDuration);
+        tweener.onComplete += () => {
+            current = target;
+            inAction = false;
+        };
     }
 }

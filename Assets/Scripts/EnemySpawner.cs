@@ -21,7 +21,7 @@ public class EnemySpawner : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        ObjectPooler.instance.CreatePool(enemyPrefab, maxEnemyCount);
+        ObjectPooler.Instance.CreatePool(enemyPrefab, maxEnemyCount);
     }
 
     // Update is called once per frame
@@ -30,7 +30,7 @@ public class EnemySpawner : MonoBehaviour
         if (timeUntilSpawn <= 0){
             // spawn a new enemy at a random track
             Vector3 [] posArray = { posList.LeftPosition, posList.CenterPosition, posList.RightPosition };
-            ObjectPooler.instance.ReuseObject(enemyPrefab, posArray[Random.Range(0, 3)], enemyPrefab.transform.rotation);
+            ObjectPooler.Instance.ReuseObject(enemyPrefab, posArray[Random.Range(0, 3)], enemyPrefab.transform.rotation);
             // reset time
             timeUntilSpawn = timeBetweenSpawns;
         } else {

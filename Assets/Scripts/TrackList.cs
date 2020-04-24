@@ -56,5 +56,37 @@ namespace DeckRunner.Positioning
             );
         }
 
+        public Vector3 leftTarget(Vector3 current){
+                if (current == centerPosition)
+            {
+                return leftPosition;
+            }
+            else if (current == rightPosition)
+            {
+                return centerPosition;
+            }
+            else
+            {
+                Debug.LogError("Unexpected position in MovePlayerLeft");
+                return current;
+            }
+        }
+
+        public Vector3 rightTarget(Vector3 current){
+                if (current == centerPosition)
+            {
+                return rightPosition;
+            }
+            else if (current == leftPosition)
+            {
+                return centerPosition;
+            }
+            else
+            {
+                Debug.LogError("Unexpected position in MovePlayerLeft");
+                return current;
+            }
+        }
+
     }
 }
