@@ -2,22 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ObjectPooler : MonoBehaviour
+public class ObjectPooler : SingletonBase<ObjectPooler>
 {
     // holds all pools of objects, keyed off of InstanceID
     private Dictionary<int, Queue<ObjectInstance>> poolDictionary = new Dictionary<int, Queue<ObjectInstance>>();
-
-    // singleton pattern
-    static ObjectPooler _instance;
-
-    public static ObjectPooler instance {
-        get {
-            if (_instance == null){
-                _instance = FindObjectOfType<ObjectPooler>();
-            }
-            return _instance;
-        }
-    }
 
     ///<summary>
     ///Create a new pool of objects
