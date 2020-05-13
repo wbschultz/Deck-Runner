@@ -16,12 +16,43 @@ public class PlayerController : MonoBehaviour
     private Vector3 target;
     private Vector3 current;
 
+    CardEventManager eventManager;
+
     // Start is called before the first frame update
     private void Start()
     {
+        eventManager = new CardEventManager(GetComponent<PlayerController>());
+
         posList = new TrackList(transform.position);
         current = posList.CenterPosition;
         target = posList.CenterPosition;
+
+        onComplete += eventManager.FinishedAction;
+    }
+
+    // Update is called once per frame
+    private void Update()
+    {
+        // for now, move on a and d, later move cards
+        if (Input.GetMouseButtonDown(1))
+        {
+            eventManager.behaviorStack.Push(() => MovePlayer(false));
+        }
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            eventManager.behaviorStack.Push(() => MovePlayer(true));
+        }
+    }
+
+    private void FixedUpdate()
+    {
+        if (!eventManager.inAction && eventManager.behaviorStack.Count > 0)
+        {
+            eventManager.inAction = true;
+            Action nextAction = eventManager.behaviorStack.Pop();
+            nextAction();
+        }
     }
 
     /// <summary>
