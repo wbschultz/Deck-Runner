@@ -60,9 +60,9 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     public void MovePlayer(bool left)
     {
-        if(left)
+        if(left && current != posList.LeftPosition)
             target = posList.leftTarget(current);
-        else
+        else if (!left && current != posList.RightPosition)
             target = posList.rightTarget(current);
             
         Tween tweener = transform.DOMove(target, leftRightDuration);
